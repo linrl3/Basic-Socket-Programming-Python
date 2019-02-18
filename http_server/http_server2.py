@@ -12,16 +12,21 @@ Errorstatus404 = 'HTTP/1.1 404 Not Found\r\n\r\n'
 Errorstatus403 = 'HTTP/1.1 403 Forbidden\r\n\r\n'
 contenttype = 'Content-Type:text/html\r\n'
 def returnresult(message):#sendinfotoclient
-	filename = message.split()[1]
-	filename=filename[1:]
-	print filename
+	if len(message)>1:
+		filename = message.split()[1]
+		filename=filename[1:]
+	else:
+		sys.exit(1)
+	#check if the file end with html or htm
+	findhtml=filename.find(".html")
+	findhtm=filename.find(".htm")
 	if os.path.isfile(filename) == 0:
 		data=Errorstatus404.encode()
 		body = "<html><head><title>" + Errorstatus404 + "</title></head><body><h1>" + Errorstatus404 + "</h1></body></html>"
 		data+=body.encode()
 		data+='\r\n'.encode()
 	elif (findhtml == -1 | findhtm == -1):
-		data+=Errorstatus403.encode()
+		data=Errorstatus403.encode()
 		body = "<html><head><title>" + Errorstatus403 + "</title></head><body><h1>" + Errorstatus403 + "</h1></body></html>"
 		data+=body.encode()
 		data+='\r\n'.encode()
